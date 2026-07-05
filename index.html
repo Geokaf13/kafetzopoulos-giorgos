@@ -6,7 +6,7 @@
 <title>Καφετζόπουλος</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
- 
+
   body {
     min-height: 100vh;
     display: flex;
@@ -19,7 +19,7 @@
     text-align: center;
     padding: 24px;
   }
- 
+
   h1 {
     font-size: clamp(2.2rem, 6vw, 4rem);
     letter-spacing: 2px;
@@ -30,14 +30,29 @@
     color: transparent;
     margin-bottom: 6px;
   }
- 
+
   .subtitle {
     color: #8fa0c0;
     font-size: 0.95rem;
-    margin-bottom: 40px;
+    margin-bottom: 12px;
     letter-spacing: 1px;
   }
- 
+
+  .role {
+    color: #ffb15e;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .tenure {
+    color: #7f93b8;
+    font-size: 0.78rem;
+    margin-bottom: 40px;
+    letter-spacing: 0.5px;
+  }
+
   .counter-box {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
@@ -46,7 +61,7 @@
     box-shadow: 0 0 60px rgba(255, 180, 90, 0.08), inset 0 0 40px rgba(255,255,255,0.02);
     backdrop-filter: blur(6px);
   }
- 
+
   .age-label {
     font-size: 1rem;
     color: #7f93b8;
@@ -54,7 +69,7 @@
     letter-spacing: 3px;
     margin-bottom: 12px;
   }
- 
+
   .age-value {
     font-size: clamp(2.4rem, 8vw, 5.5rem);
     font-weight: 700;
@@ -63,49 +78,134 @@
     text-shadow: 0 0 30px rgba(255, 200, 120, 0.3);
     white-space: nowrap;
   }
- 
+
   .age-value .decimals {
     color: #ffb15e;
     font-size: 0.6em;
   }
- 
+
   .footer {
-    margin-top: 30px;
+    margin-top: 10px;
     font-size: 0.8rem;
     color: #55648a;
     letter-spacing: 1px;
   }
+
+  .stats-grid {
+    display: flex;
+    gap: 18px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 18px 24px;
+    min-width: 140px;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: #7f93b8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffd76a;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .linkedin-link {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 22px;
+    border-radius: 30px;
+    background: linear-gradient(90deg, #0a66c2, #0e5aa7);
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 20px rgba(10,102,194,0.35);
+    transition: transform 0.2s ease;
+  }
+
+  .linkedin-link:hover {
+    transform: translateY(-2px);
+  }
 </style>
 </head>
 <body>
- 
+
   <h1>ΚΑΦΕΤΖΟΠΟΥΛΟΣ</h1>
   <div class="subtitle">ΓΕΩΡΓΙΟΣ</div>
- 
+  <div class="role">Branch Manager · CrediaBank Πανεπιστημίου -065-</div>
+  <div class="tenure">στο Πανεπιστημίου -065- από 23.09.2019</div>
+
   <div class="counter-box">
     <div class="age-label">Ηλικία</div>
     <div class="age-value" id="ageDisplay">—</div>
   </div>
- 
-  <div class="footer">από 19.01.1978</div>
- 
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Μέρες ζωής</div>
+      <div class="stat-value" id="daysDisplay">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Καρδιοχτύποι *</div>
+      <div class="stat-value" id="heartbeatsDisplay">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Δευτερόλεπτα</div>
+      <div class="stat-value" id="secondsDisplay">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Χρόνια στο -065-</div>
+      <div class="stat-value" id="tenureDisplay">—</div>
+    </div>
+  </div>
+  <div class="footer">* εκτίμηση με μέσο όρο 75 παλμούς/λεπτό</div>
+
+  <div class="footer" style="margin-top:20px;">από 19.01.1978</div>
+
+  <a href="https://www.linkedin.com/in/giorgos-kafetzopoulos-a09761402" target="_blank" rel="noopener" class="linkedin-link">
+    δες το LinkedIn μου →
+  </a>
+
   <script>
     // Ημερομηνία γέννησης: 19 Ιανουαρίου 1978 (τοπική ώρα)
     const birthDate = new Date(1978, 0, 19, 0, 0, 0, 0);
+    const tenureStart = new Date(2019, 8, 23, 0, 0, 0, 0); // 23.09.2019
     const msPerYear = 365.2425 * 24 * 60 * 60 * 1000; // μέση ημερολογιακή χρονιά
- 
+    const heartRatePerMinute = 75;
+
     function updateAge() {
       const now = new Date();
       const diffMs = now - birthDate;
       const ageYears = diffMs / msPerYear;
-      document.getElementById('ageDisplay').innerHTML =
-        ageYears.toFixed(9);
+      const diffSeconds = diffMs / 1000;
+      const diffDays = diffMs / (1000 * 60 * 60 * 24);
+      const heartbeats = (diffMs / 60000) * heartRatePerMinute;
+      const tenureYears = (now - tenureStart) / msPerYear;
+
+      document.getElementById('ageDisplay').innerHTML = ageYears.toFixed(9);
+      document.getElementById('daysDisplay').innerHTML = diffDays.toFixed(4);
+      document.getElementById('secondsDisplay').innerHTML = Math.floor(diffSeconds).toLocaleString('el-GR');
+      document.getElementById('heartbeatsDisplay').innerHTML = Math.floor(heartbeats).toLocaleString('el-GR');
+      document.getElementById('tenureDisplay').innerHTML = tenureYears.toFixed(6);
     }
- 
+
     updateAge();
     setInterval(updateAge, 50); // ανανέωση κάθε 50ms για ομαλή κίνηση ψηφίων
   </script>
- 
+
 </body>
 </html>
- 
