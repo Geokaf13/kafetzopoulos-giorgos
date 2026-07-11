@@ -300,9 +300,69 @@
       stroke-dashoffset: 0 !important;
     }
   }
+
+  /* Custom Cursor styles from koumarianos24.gr */
+  body {
+    cursor: none;
+  }
+
+  body.no-custom-cursor,
+  body.no-custom-cursor * {
+    cursor: auto !important;
+  }
+
+  .cursor,
+  .cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    will-change: transform;
+  }
+
+  .cursor {
+    width: 8px;
+    height: 8px;
+    background: #ffffff;
+    mix-blend-mode: difference;
+    transition: transform 0.1s ease-out;
+  }
+
+  .cursor-follower {
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.15s ease-out, width 0.2s ease, height 0.2s ease;
+  }
+
+  .cursor.active {
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+
+  .cursor-follower.active {
+    width: 48px;
+    height: 48px;
+  }
+
+  @media (max-width: 768px) {
+    .cursor,
+    .cursor-follower {
+      display: none !important;
+    }
+    body {
+      cursor: auto;
+    }
+  }
 </style>
 </head>
 <body>
+
+  <!-- Custom Cursor Elements -->
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
 
   <div class="content">
     <div class="seal" aria-hidden="true">
@@ -415,6 +475,81 @@
       revealEls.forEach((el) => io.observe(el));
     } else {
       revealEls.forEach((el) => el.classList.add('is-visible'));
+    }
+
+    // Custom Cursor JavaScript from koumarianos24.gr
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    class CustomCursor {
+      constructor() {
+        this.cursor = document.querySelector('.cursor');
+        this.follower = document.querySelector('.cursor-follower');
+        
+        if (!this.cursor || !this.follower) return;
+        
+        this.pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        this.followerPos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        this.mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        this.isActive = false;
+        
+        if (window.matchMedia('(hover: hover)').matches) {
+          this.init();
+        } else {
+          document.body.classList.add('no-custom-cursor');
+        }
+      }
+      
+      init() {
+        document.addEventListener('mousemove', (e) => {
+          this.mouse.x = e.clientX;
+          this.mouse.y = e.clientY;
+        }, { passive: true });
+        
+        const interactive = document.querySelectorAll('a, button, .linkedin-link, [role="button"]');
+        
+        interactive.forEach(el => {
+          el.addEventListener('mouseenter', () => {
+            this.isActive = true;
+            this.cursor.classList.add('active');
+            this.follower.classList.add('active');
+          });
+          
+          el.addEventListener('mouseleave', () => {
+            this.isActive = false;
+            this.cursor.classList.remove('active');
+            this.follower.classList.remove('active');
+          });
+        });
+        
+        this.render();
+      }
+      
+      render() {
+        this.pos.x = lerp(this.pos.x, this.mouse.x, 0.8);
+        this.pos.y = lerp(this.pos.y, this.mouse.y, 0.8);
+        
+        this.followerPos.x = lerp(this.followerPos.x, this.mouse.x, 0.2);
+        this.followerPos.y = lerp(this.followerPos.y, this.mouse.y, 0.2);
+        
+        if (this.cursor) {
+          this.cursor.style.left = `${this.pos.x}px`;
+          this.cursor.style.top = `${this.pos.y}px`;
+        }
+        
+        if (this.follower) {
+          this.follower.style.left = `${this.followerPos.x}px`;
+          this.follower.style.top = `${this.followerPos.y}px`;
+        }
+        
+        requestAnimationFrame(() => this.render());
+      }
+    }
+
+    // Initialize custom cursor when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => new CustomCursor());
+    } else {
+      new CustomCursor();
     }
   </script>
 
